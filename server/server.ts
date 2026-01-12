@@ -1,12 +1,40 @@
 import express, {Request,Response} from 'express'
 import cors from 'cors'
+import connectionDB from './configs/db.js'
+import session from 'express-session'
+import MongoStore from 'connect-mongo'
+declare module 'express-session' {
+    interface SessionData {
+        isLoggedIn:boolean,
+        userId: string
+    }
+}
+import 'dotenv/config'
+import AuthRouter from './routes/AuthRoutes.js'
+await connectionDB();
 const app=  express()
 const port =process.env.PORT || 3000;
-app.use(cors())
+app.use(cors({
+    origin:['http://localhost:5173','http://localhost:3000'],
+    credentials:true,
+}))
+app.use(session({
+    secret: process.env.SESSION_SECRET as string,
+    resave:false,
+    saveUninitialized:false,
+    cookie:{
+        maxAge: 1000*60*60*24*7
+    },
+    store: MongoStore.create({
+            mongoUrl:process.env.MONGODB_URI as string,
+            collectionName: 'sessions'
+        })
+}))
 app.use(express.json())
 app.get('/',(req:Request,res:Response)=>{
     res.send('Server is Live');
 })
+app.use('/api/auth',AuthRouter);
 app.listen(port,()=>{
     console.log('Server is running ')
 })
