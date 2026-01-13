@@ -20,6 +20,7 @@ app.use(cors({
     origin:['http://localhost:5173','http://localhost:3000',"https://thumbify-rho.vercel.app/login"],
     credentials:true,
 }))
+app.set('trust proxy',1)
 app.use(session({
     secret: process.env.SESSION_SECRET as string,
     resave:false,
@@ -28,6 +29,7 @@ app.use(session({
         maxAge: 1000*60*60*24*7,
         httpOnly:true,
         secure:process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
         path:'/'
     },
     store: MongoStore.create({
