@@ -11,6 +11,8 @@ declare module 'express-session' {
 }
 import 'dotenv/config'
 import AuthRouter from './routes/AuthRoutes.js'
+import ThumbnailRouter from './routes/ThumbnaailRoutes.js'
+import userRouter from './routes/UserRoutes.js'
 await connectionDB();
 const app=  express()
 const port =process.env.PORT || 3000;
@@ -35,6 +37,8 @@ app.get('/',(req:Request,res:Response)=>{
     res.send('Server is Live');
 })
 app.use('/api/auth',AuthRouter);
+app.use('/api/thumbnail',ThumbnailRouter)
+app.use('/api/user',userRouter)
 app.listen(port,()=>{
     console.log('Server is running ')
 })
