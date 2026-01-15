@@ -6,6 +6,6 @@ const protect = async (req: Request,res:Response,next: NextFunction)=>{
             message:'Please Login'
         })
     }
-    next()
+    next();
 }
 export default protect;

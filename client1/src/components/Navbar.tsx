@@ -73,7 +73,7 @@ export default function Navbar() {
                     isLoggedIn? 
                     <button onClick={() => {setIsOpen(false); logout()}} >
 
-
+                    Logout
                     </button>:
                     <Link to="/login" onClick={() => setIsOpen(false)}>
                  Login

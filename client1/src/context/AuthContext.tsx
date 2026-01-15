@@ -62,7 +62,8 @@ email,password
             setIsLoggedIn(false);
              toast.success(data.message)
         }
-        catch(error){
+        catch(error:any){
+            toast.error(`Logout failed: ${error.message}`);
             console.log(error)
         }
 
